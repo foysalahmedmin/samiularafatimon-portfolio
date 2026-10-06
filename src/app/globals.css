@@ -1,26 +1,41 @@
 @import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@import "../styles/tokens.css";
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-ink: var(--c-ink);
+  --color-console: var(--c-console);
+  --color-raised: var(--c-raised);
+  --color-paper: var(--c-paper);
+  --color-bone: var(--c-bone);
+  --color-mist: var(--c-mist);
+  --color-slate: var(--c-slate);
+  --color-signal: var(--c-signal);
+  --color-signal-deep: var(--c-signal-deep);
+  --color-signal-glow: var(--c-signal-glow);
+  --color-rec: var(--c-rec);
+
+  --font-display: var(--next-font-display), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--next-font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--next-font-mono), ui-monospace, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--c-ink);
+  color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--tone-bg);
+  color: var(--tone-fg);
+  font-family: var(--next-font-body), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Display type with a variable width axis: condensed = 9:16, expanded = 16:9.
+   Uses the next/font variable directly: Tailwind only emits theme variables that a utility uses. */
+.reframe {
+  font-family: var(--next-font-display), ui-sans-serif, system-ui, sans-serif;
+  font-variation-settings: "wdth" var(--wdth);
 }

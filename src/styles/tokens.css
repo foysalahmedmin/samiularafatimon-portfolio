@@ -1,0 +1,62 @@
+/* Design tokens. One source for colour, tone, motion and layout.
+   Motion values are mirrored in src/lib/motion/tokens.ts (Phase 2). */
+
+/* Registered so the font width axis can be transitioned and tweened. */
+@property --wdth {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 100;
+}
+
+:root {
+  /* Brand palette (master spec §4.2) */
+  --c-ink: #050d14;
+  --c-console: #0e1c28;
+  --c-raised: #15293a;
+  --c-paper: #eef4f7;
+  --c-paper-2: #ffffff;
+  --c-paper-3: #e1eaef;
+  --c-bone: #e9f1f5;
+  --c-mist: #8ca3b1;
+  --c-slate: #4a6070;
+  --c-signal: #1fb5dd;
+  --c-signal-deep: #0a6f90;
+  --c-signal-glow: #ccf4ff;
+  --c-rec: #ff5a47;
+
+  /* Motion (Motion & UX spec §2) */
+  --ease-cut: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-glide: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-ramp: cubic-bezier(0.55, 0, 1, 0.45);
+  --dur-micro: 160ms;
+  --dur-ui: 280ms;
+  --dur-reveal: 700ms;
+  --dur-scene: 1100ms;
+
+  /* Layout */
+  --gutter: clamp(16px, 4vw, 48px);
+  --container: 1360px;
+  --section-y: clamp(96px, 14vw, 200px);
+  --radius-sm: 4px;
+  --radius-md: 12px;
+  --radius-lg: 24px;
+}
+
+/* Tones: dark = footage, light = reading. Components read --tone-* only. */
+[data-tone="dark"] {
+  --tone-bg: var(--c-ink);
+  --tone-surface: var(--c-console);
+  --tone-fg: var(--c-bone);
+  --tone-muted: var(--c-mist);
+  --tone-accent: var(--c-signal);
+  --tone-line: rgb(233 241 245 / 0.12);
+}
+
+[data-tone="light"] {
+  --tone-bg: var(--c-paper);
+  --tone-surface: var(--c-paper-2);
+  --tone-fg: var(--c-ink);
+  --tone-muted: var(--c-slate);
+  --tone-accent: var(--c-signal-deep);
+  --tone-line: rgb(5 13 20 / 0.12);
+}
