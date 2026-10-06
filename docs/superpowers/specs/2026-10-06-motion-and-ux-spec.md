@@ -129,7 +129,7 @@ The system cursor stays. A follower is added: 8 px dot (exact) + 36 px ring (`le
 
 Hidden on touch and reduced motion.
 
-### 3.7 Route transitions ✔ (Next 16.2: `experimental.viewTransition` + React `<ViewTransition>` + `<Link transitionTypes>`)
+### 3.7 Route transitions ✔ (installed Next 16.3 docs: React `<ViewTransition>` + `<Link transitionTypes>`; **no config flag**)
 
 | Case | Effect |
 |---|---|
@@ -140,7 +140,7 @@ Hidden on touch and reduced motion.
 | Unsupported browser | Instant navigation + 240 ms fade-in of main content |
 | Reduced motion | None |
 
-Always on route change: `lenis.scrollTo(0, { immediate: true })`, `ScrollTrigger.refresh()`, and `useGSAP` contexts revert on unmount. **The site must work with transitions disabled** (the flag is experimental) — transitions are a layer, never a dependency.
+Always on route change: `lenis.scrollTo(0, { immediate: true })`, `ScrollTrigger.refresh()`, and `useGSAP` contexts revert on unmount. **The site must work with transitions disabled** (browser support varies; without it navigation is instant) — transitions are a layer, never a dependency. Rules from the docs: give both ends of a shared element the **same `name`**; with `default="none"` also pass `share="morph"`; the morph only forms when the destination renders in the same commit (so prefetch case-study links); give the header and timeline bar a `viewTransitionName` and suppress their group animation so persistent chrome doesn't crossfade.
 
 ### 3.8 Inner-page entrance
 
@@ -309,7 +309,7 @@ Registers plugins once (ScrollTrigger, SplitText, Flip, CustomEase, `useGSAP`); 
 Register once. Create triggers top-to-bottom or set `refreshPriority`. Put a trigger on a timeline or top-level tween — **never on a child tween**, never nest. Don't combine `scrub` and `toggleActions`. Use `ease: "none"` with `containerAnimation`. Remove `markers` from production. Parallax: `travel = speed × containerHeight`; inner layer inset by `travel`; tween `y: -travel → travel`, `ease: "none"`, `scrub: true`.
 
 ### 9.6 R3F
-`Canvas` is client-only and lazy. `frameloop` switches `always ↔ never` with an `IntersectionObserver`. Hero scroll progress is read from a shared store in `useFrame` (no React state per frame).
+`Canvas` is client-only and lazy: a small `"use client"` wrapper does `dynamic(() => import(...), { ssr: false })` (Next rejects `ssr: false` in Server Components). `frameloop` switches `always ↔ never` with an `IntersectionObserver`. Hero scroll progress is read from a shared store in `useFrame` (no React state per frame).
 
 ### 9.7 Next 16 specifics ✔
 `params`/`searchParams` are async (`await params`). `middleware` is now `proxy.ts`. Turbopack is the default for dev and build. `next/image` requires `images.qualities`. There is no `next lint` (run ESLint directly). **`axes` for `next/font/google` is allowed only for variable fonts with no explicit weight** — Archivo is declared as variable with `axes: ["wdth"]`; Phase 0 verifies the width axis is really served.

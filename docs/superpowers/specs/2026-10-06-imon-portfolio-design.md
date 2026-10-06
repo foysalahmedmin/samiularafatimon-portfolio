@@ -83,7 +83,7 @@ Mechanism: every stat/claim record has `needsReview: true` until cleared. `pnpm 
 | D9 | Case studies | **Pathao** (commercial), **Rich From Anywhere** (long-form YouTube), **Fafa Fitness** (short-form) | Covers Imon's three core formats; Fafa has the only hard number (556K subscribers — audience size, not growth). Swap candidates: Arkangel University, JetEdCo, Elite Rentals Dubai (see §6.1). |
 | D10 | Out of scope v1 | Blog/Journal, Bengali, CMS UI, reviews page, theme toggle, live YouTube feed (needs a confirmed channel ID) | Not needed to launch; architecture leaves room (§7.5). |
 | D11 | How I execute | Inline in this session, stopping at every phase gate with a live `pnpm dev` URL. Parallel agents only if you ask for them. | Keeps context in one place and costs less; you review before the next phase starts. |
-| D12 | Route transitions | Native View Transitions (Next 16 `experimental.viewTransition` + React `<ViewTransition>`) as a progressive layer | Match-cut from card to case study without hacks. The flag is experimental, so the site must work with it off. |
+| D12 | Route transitions | Native View Transitions: React `<ViewTransition>` + `<Link transitionTypes>` (Next 16.3 needs no config flag — checked in the bundled docs) as a progressive layer | Match-cut from card to case study without hacks. Browsers differ (Safari/Firefox), so the site must work with transitions off. |
 | D13 | Work-card hover previews | Muted ~4 s loop on desktop hover | Strongest "this person edits video" signal on the page. Needs short preview clips (§13). |
 | D14 | `needsReview` gate | Fails the build only for the production deployment; previews and local builds warn | Lets you share previews while facts are still being confirmed. |
 
@@ -358,7 +358,7 @@ Phases 4–6 are independent once Phase 3 locks the shell. They run one after an
 | Duplicate content with montagemotion.com | First-person rewrite, canonical, cross-links |
 | Asset rights / hotlinking the agency bucket | Self-host copies; confirm client permission for thumbnails and quotes |
 | Source numbers came through page summarisation | Re-verify each fact against the live source when writing the data files |
-| View Transitions flag is experimental in Next 16 | Transitions are a progressive layer (D12); site works with the flag off; verified on Chrome/Safari/Firefox in Phase 3 |
+| View Transitions behave differently across browsers; the shared-element morph only forms when the destination is prefetched | Transitions are a progressive layer (D12); the site works with them off; prefetch case-study links; verified on Chrome/Safari/Firefox in Phase 3 |
 | Hero name → wordmark match cut is fiddly (measure + FLIP across a pin) | Built behind a crossfade fallback; measured on refresh with `invalidateOnRefresh` |
 | 2.5D portrait needs clean layer separation from one photo | Try background removal / layer separation first; fall back to a 2-layer parallax or Ken Burns if edges are poor |
 | Hover previews need short clips | Generate 4 s 480p loops with ffmpeg from supplied videos (§13); poster-only if none |
