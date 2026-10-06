@@ -1014,3 +1014,11 @@ Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>"
 - §9 tooling rails (typecheck, lint, unit, e2e) → Tasks 4, 5, 7, 8.
 - Motion & UX §9.7 (`axes` constraint, async APIs) → Tasks 2, 6, 7.
 - Not in this phase by design: content schemas (Phase 1), primitives and motion engine (Phase 2).
+
+## Execution notes (what differed from the plan)
+
+- `create-next-app` refuses a folder that already contains non-whitelisted files (`profile.jpg`, the empty nested `imon-portfolio/`). I scaffolded into a scratch folder and copied the result in with `rsync` (excluding `node_modules`/`.next`), then ran `pnpm install --frozen-lockfile`. The empty nested folder was left untouched.
+- Work happens on branch `feat/foundation`; `main` holds only the docs commit. The machine's existing git identity is used for commits.
+- Vitest 5 resolves tsconfig paths natively (`resolve: { tsconfigPaths: true }`), so `vite-tsconfig-paths` was installed, then removed.
+- View transitions need **no config flag** in the installed Next 16.3 docs (the 16.2 web docs mention `experimental.viewTransition`). Specs corrected.
+- Result: `pnpm check` green (17 unit tests, build ok); `pnpm test:e2e` 3 passed — including the real-browser proof that Archivo's width axis is served (62 → 125 changes rendered width by more than 1.3×).

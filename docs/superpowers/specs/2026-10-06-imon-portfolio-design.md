@@ -82,7 +82,7 @@ Mechanism: every stat/claim record has `needsReview: true` until cleared. `pnpm 
 | D8 | Analytics | Vercel Analytics or Plausible (no cookie banner) | Privacy-friendly; GA4 can be added via env. |
 | D9 | Case studies | **Pathao** (commercial), **Rich From Anywhere** (long-form YouTube), **Fafa Fitness** (short-form) | Covers Imon's three core formats; Fafa has the only hard number (556K subscribers — audience size, not growth). Swap candidates: Arkangel University, JetEdCo, Elite Rentals Dubai (see §6.1). |
 | D10 | Out of scope v1 | Blog/Journal, Bengali, CMS UI, reviews page, theme toggle, live YouTube feed (needs a confirmed channel ID) | Not needed to launch; architecture leaves room (§7.5). |
-| D11 | How I execute | Inline in this session, stopping at every phase gate with a live `pnpm dev` URL. Parallel agents only if you ask for them. | Keeps context in one place and costs less; you review before the next phase starts. |
+| D11 | How I execute | Inline in this session on a feature branch. Phases 0–1 are plumbing, gated by automated checks, so I continue straight into Phase 2. I stop for **your review** at Phase 2 (design system) and at every phase after, with a live `pnpm dev` URL. Parallel agents only if you ask for them. | Keeps context in one place and costs less; you judge visuals, not plumbing. |
 | D12 | Route transitions | Native View Transitions: React `<ViewTransition>` + `<Link transitionTypes>` (Next 16.3 needs no config flag — checked in the bundled docs) as a progressive layer | Match-cut from card to case study without hacks. Browsers differ (Safari/Firefox), so the site must work with transitions off. |
 | D13 | Work-card hover previews | Muted ~4 s loop on desktop hover | Strongest "this person edits video" signal on the page. Needs short preview clips (§13). |
 | D14 | `needsReview` gate | Fails the build only for the production deployment; previews and local builds warn | Lets you share previews while facts are still being confirmed. |
@@ -341,7 +341,7 @@ Phases 4–6 are independent once Phase 3 locks the shell. They run one after an
 3. **Execution is inline** (executing-plans style): I work through the plan task by task in this session, with TDD for logic code and a check after every task. No sub-agents unless you ask (D11).
 4. **Design loop** (frontend-design): build → screenshot at 375 / 768 / 1280 / 1920 → critique against §4 and the Motion & UX Spec → remove one "accessory" → fix.
 5. **Verification before completion** at every phase gate: run the commands, show the output and screenshots; no "should work".
-6. I stop at each phase gate with a live `pnpm dev` URL for you to review.
+6. Phases 0–1 are checked by automated gates (typecheck, lint, tests, build). From Phase 2 on I stop at each gate with a live `pnpm dev` URL for you to review.
 
 ---
 
