@@ -36,10 +36,11 @@
   /* Layout */
   --gutter: clamp(16px, 4vw, 48px);
   --container: 1360px;
-  --section-y: clamp(96px, 14vw, 200px);
+  --section-y: clamp(88px, 11vw, 168px);
   --radius-sm: 4px;
   --radius-md: 12px;
   --radius-lg: 24px;
+  --sheet-r: clamp(20px, 3.5vw, 48px);
 }
 
 /* Tones: dark = footage, light = reading. Components read --tone-* only. */

@@ -1,32 +1,120 @@
-import type { CSSProperties } from "react";
+import type { Metadata } from "next";
+import { AboutTeaser } from "@/features/home/AboutTeaser";
+import { Boot } from "@/features/home/Boot";
+import { CaseStack } from "@/features/home/CaseStack";
+import { ContactCredits } from "@/features/home/ContactCredits";
+import { FaqAccordion } from "@/features/home/FaqAccordion";
+import { Hero } from "@/features/home/Hero";
+import { ProcessScene } from "@/features/home/ProcessScene";
+import { Proof } from "@/features/home/Proof";
+import { Reel } from "@/features/home/Reel";
+import { ServiceIndex } from "@/features/home/ServiceIndex";
+import { Studio } from "@/features/home/Studio";
+import { WorkTrack } from "@/features/home/WorkTrack";
+import { Words } from "@/features/home/Words";
+import {
+  getAbout,
+  getCaseStudies,
+  getClients,
+  getFaq,
+  getHome,
+  getPlayable,
+  getProcess,
+  getRibbonFrames,
+  getServices,
+  getSite,
+  getSeo,
+  getStats,
+  getTestimonials,
+  getUi,
+  getWorkItems,
+  getWorkPage,
+} from "@/lib/content";
+import { pageMetadata } from "@/lib/seo/metadata";
 
-// Temporary: proves fonts, tokens and the width axis. Replaced in Phase 3.
-const wdth = (value: number) => ({ "--wdth": value }) as CSSProperties;
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await getSeo("home");
+  return pageMetadata({ ...seo, path: "/", absoluteTitle: true });
+}
 
-export default function Home() {
+export default async function HomePage() {
+  const [site, home, about, allStats, clients, workItems, workPage, cases, services, stages, faq, testimonials, frames, ui] =
+    await Promise.all([
+      getSite(),
+      getHome(),
+      getAbout(),
+      getStats(),
+      getClients(),
+      getWorkItems({ featuredOnly: true }),
+      getWorkPage(),
+      getCaseStudies(),
+      getServices(),
+      getProcess(),
+      getFaq(),
+      getTestimonials({ featuredOnly: true }),
+      getRibbonFrames(14),
+      getUi(),
+    ]);
+  const reel = await getPlayable(home.reel.media);
+  if (reel.kind !== "video") throw new Error("The reel must be a video entry");
+
+  const whatsappHref = `https://wa.me/${site.contact.whatsapp.number}?text=${encodeURIComponent(site.contact.whatsapp.prefill)}`;
+
   return (
-    <main className="mx-auto flex min-h-svh max-w-[var(--container)] flex-col justify-center gap-10 px-[var(--gutter)] py-24">
-      <p className="font-mono text-sm uppercase tracking-[0.2em] text-mist">Foundation · Phase 0</p>
-      <h1
-        className="reframe text-[clamp(2.75rem,10vw,9rem)] leading-[0.92] font-extrabold"
-        style={wdth(125)}
-      >
-        Samiul Arafat Imon
-      </h1>
-      <div className="flex flex-wrap items-baseline gap-x-10 gap-y-4 text-3xl font-extrabold">
-        <span className="reframe" style={wdth(62)}>
-          Condensed 9:16
-        </span>
-        <span className="reframe" style={wdth(100)}>
-          Regular
-        </span>
-        <span className="reframe" style={wdth(125)}>
-          Expanded 16:9
-        </span>
-      </div>
-      <p className="max-w-prose text-lg text-mist">
-        Body copy in DM Sans on Ink. <span className="font-mono text-signal">00:00:00:00</span>
-      </p>
-    </main>
+    <>
+      <Boot name={site.name} />
+      <Hero
+        name={site.name}
+        kicker={home.hero.kicker}
+        headline={home.hero.headline}
+        sub={home.hero.sub}
+        primary={home.hero.primaryCta}
+        secondary={home.hero.secondaryCta}
+        frames={frames}
+      />
+      <Proof
+        head={home.proof}
+        clientsLabel={home.proof.clientsLabel}
+        stats={allStats.filter((stat) => stat.featured)}
+        clients={clients}
+      />
+      <Reel
+        head={home.reel}
+        video={reel}
+        caption={home.reel.caption}
+        labels={{ play: ui.play, videoUnavailable: ui.videoUnavailable }}
+      />
+      <WorkTrack head={home.work} items={workItems} categories={workPage.categories} watchLabel={ui.watch} />
+      <CaseStack head={home.cases} cases={cases} labels={{ readCase: ui.readCase, client: ui.caseStudy.client }} />
+      <ServiceIndex head={home.services} services={services} />
+      <ProcessScene head={home.process} stages={stages} />
+      <AboutTeaser
+        head={home.about}
+        portrait={about.portrait}
+        story={about.story[0] ?? ""}
+        facts={about.facts}
+      />
+      <Words
+        head={home.words}
+        items={testimonials}
+        labels={{ previous: ui.previous, next: ui.next, readCase: ui.readCase }}
+      />
+      <Studio
+        head={home.studio}
+        stats={allStats.filter((stat) => stat.scope === "agency")}
+        serviceNames={services.map((service) => service.shortTitle)}
+      />
+      <FaqAccordion head={home.faq} items={faq.groups.flatMap((group) => group.items)} />
+      <ContactCredits
+        kicker={home.proof.kicker === "" ? "" : ui.bookCall}
+        headline={home.contact.headline}
+        sub={home.contact.sub}
+        primary={home.contact.primaryCta}
+        whatsapp={{ label: home.contact.whatsappLabel, href: whatsappHref }}
+        email={{ label: home.contact.emailLabel, href: `mailto:${site.contact.email}` }}
+        availability={site.availability}
+        location={site.location}
+      />
+    </>
   );
 }

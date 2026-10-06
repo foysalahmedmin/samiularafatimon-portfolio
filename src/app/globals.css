@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "lenis/dist/lenis.css";
 @import "../styles/tokens.css";
 
 @theme inline {
@@ -19,10 +20,13 @@
   --font-mono: var(--next-font-mono), ui-monospace, monospace;
 }
 
+/* ───────── Base ───────── */
+
 html {
   background: var(--c-ink);
   color-scheme: dark;
   -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 72px;
 }
 
 body {
@@ -31,6 +35,18 @@ body {
   font-family: var(--next-font-body), ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--c-signal);
+  color: var(--c-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--c-signal);
+  outline-offset: 3px;
+  border-radius: 4px;
 }
 
 /* Display type with a variable width axis: condensed = 9:16, expanded = 16:9.
@@ -38,4 +54,178 @@ body {
 .reframe {
   font-family: var(--next-font-display), ui-sans-serif, system-ui, sans-serif;
   font-variation-settings: "wdth" var(--wdth);
+}
+
+/* ───────── Reveals: content is visible without JS ─────────
+   While the motion engine runs (html.js), below-the-fold reveal targets start hidden.
+   If the engine never starts, a pure-CSS failsafe shows everything after 3 seconds. */
+
+html.js [data-reveal] {
+  opacity: 0;
+}
+html.js:not(.motion-ready) [data-reveal] {
+  animation: reveal-failsafe 0s linear 3s forwards;
+}
+@keyframes reveal-failsafe {
+  to {
+    opacity: 1;
+  }
+}
+
+/* ───────── Controls ───────── */
+
+.roll {
+  display: block;
+  height: 1.3em;
+  line-height: 1.3;
+  overflow: hidden;
+}
+.roll > span {
+  display: block;
+  transition: transform var(--dur-ui) var(--ease-glide);
+}
+.btn:hover .roll > span,
+.btn:focus-visible .roll > span,
+.group:hover > .roll > span {
+  transform: translateY(-100%);
+}
+
+.btn:not([class*="bg-"])::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: color-mix(in oklab, var(--tone-accent) 12%, transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-ui) var(--ease-glide);
+}
+.btn:not([class*="bg-"]):hover::before {
+  transform: scaleX(1);
+}
+
+.u-link {
+  background: linear-gradient(currentColor, currentColor) no-repeat 100% 100% / 0 1px;
+  transition: background-size var(--dur-ui) var(--ease-glide);
+  padding-bottom: 2px;
+}
+.u-link:hover,
+.u-link:focus-visible {
+  background-position: 0 100%;
+  background-size: 100% 1px;
+}
+
+@keyframes rec-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  70%,
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+.rec-pulse {
+  animation: rec-pulse 2s var(--ease-glide) infinite;
+}
+
+/* ───────── Chrome follows the room's tone ───────── */
+
+html[data-header-tone="light"] .site-header {
+  --chrome-fg: var(--c-ink);
+  --chrome-line: rgb(5 13 20 / 0.14);
+  --chrome-bg: rgb(238 244 247 / 0.82);
+  --tone-fg: var(--c-ink);
+  --tone-bg: var(--c-paper);
+  --tone-accent: var(--c-signal-deep);
+}
+.site-header {
+  --chrome-fg: var(--c-bone);
+  --chrome-line: rgb(233 241 245 / 0.14);
+  --chrome-bg: rgb(5 13 20 / 0.6);
+  --tone-fg: var(--c-bone);
+  --tone-bg: var(--c-ink);
+  --tone-accent: var(--c-signal);
+  color: var(--chrome-fg);
+  transition:
+    color var(--dur-ui) var(--ease-glide),
+    transform var(--dur-scene) var(--ease-cut),
+    background-color var(--dur-ui) var(--ease-glide);
+}
+
+html[data-bar-tone="light"] .timeline-bar {
+  --bar-bg: rgb(255 255 255 / 0.9);
+  --bar-fg: var(--c-ink);
+  --bar-line: rgb(5 13 20 / 0.14);
+  --bar-muted: var(--c-slate);
+  --bar-accent: var(--c-signal-deep);
+}
+.timeline-bar {
+  --bar-bg: rgb(14 28 40 / 0.86);
+  --bar-fg: var(--c-bone);
+  --bar-line: rgb(233 241 245 / 0.14);
+  --bar-muted: var(--c-mist);
+  --bar-accent: var(--c-signal);
+  color: var(--bar-fg);
+  transition:
+    color var(--dur-ui) var(--ease-glide),
+    background-color var(--dur-ui) var(--ease-glide),
+    border-color var(--dur-ui) var(--ease-glide);
+}
+
+/* ───────── Opening sequence (Home) ───────── */
+
+html.boot-skip .boot-overlay {
+  display: none;
+}
+/* Failsafe: even if scripting dies, the overlay lets go after four seconds. */
+.boot-overlay {
+  animation: boot-failsafe 0s linear 4s forwards;
+}
+@keyframes boot-failsafe {
+  to {
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+/* ───────── Route transitions: cut-wipe (progressive; instant where unsupported) ───────── */
+
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-new(.cut-in) {
+    animation: cut-wipe 520ms var(--ease-cut) both;
+  }
+  @keyframes cut-wipe {
+    from {
+      clip-path: inset(0 0 100% 0);
+    }
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}
+::view-transition-group(site-header),
+::view-transition-group(timeline-bar) {
+  animation: none;
+}
+
+/* ───────── Reduced motion: nothing moves, everything works ───────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }

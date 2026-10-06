@@ -38,6 +38,8 @@ export const videoMedia = z.object({
   /** File name under public/media/previews, produced by `pnpm media:sync` with ffmpeg. */
   preview: z.string().regex(/^[a-z0-9-]+\.mp4$/).optional(),
   previewStartSec: z.number().nonnegative().optional(),
+  /** Height in pixels of the preview clip. Default 360; use 720 for large frames. */
+  previewHeight: z.number().int().min(240).max(1080).optional(),
   aspect,
   title: z.string().min(1),
   durationSec: z.number().positive().optional(),

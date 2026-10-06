@@ -87,6 +87,8 @@ export const site: Site = {
     { label: "Pricing", href: "/pricing" },
   ],
   footer: {
+    servicesTitle: "Services",
+    elsewhereTitle: "Elsewhere",
     groups: [
       {
         title: "Explore",

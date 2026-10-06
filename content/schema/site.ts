@@ -45,6 +45,8 @@ export const siteSchema = z.object({
   }),
   nav: z.array(link).min(3),
   footer: z.object({
+    servicesTitle: z.string(),
+    elsewhereTitle: z.string(),
     groups: z.array(z.object({ title: z.string(), links: z.array(link) })),
     credits: z.array(z.object({ role: z.string(), value: z.string(), href: href.optional() })),
     legal: z.array(link),

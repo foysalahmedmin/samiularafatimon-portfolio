@@ -64,7 +64,7 @@ async function describe(target: string) {
   };
 }
 
-function ffmpegPreview(src: string, startSec: number, out: string): Promise<void> {
+function ffmpegPreview(src: string, startSec: number, height: number, out: string): Promise<void> {
   return new Promise((resolve, reject) => {
     const child = spawn(
       "ffmpeg",
@@ -74,7 +74,7 @@ function ffmpegPreview(src: string, startSec: number, out: string): Promise<void
         "-t", "4",
         "-i", src,
         "-an",
-        "-vf", "scale=-2:360,fps=24",
+        "-vf", `scale=-2:${height},fps=24`,
         "-c:v", "libx264", "-preset", "veryfast", "-crf", "29",
         "-movflags", "+faststart",
         out,
@@ -104,7 +104,7 @@ async function main() {
       const target = path.join(PREVIEWS, item.preview);
       if (wants(item.id, target)) {
         process.stdout.write(`preview ${item.id} … `);
-        await ffmpegPreview(item.src, item.previewStartSec ?? 0, target);
+        await ffmpegPreview(item.src, item.previewStartSec ?? 0, item.previewHeight ?? 360, target);
         console.log("written");
       }
     }

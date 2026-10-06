@@ -36,13 +36,16 @@ export type {
   ResolvedService,
   ResolvedStat,
   ResolvedTestimonial,
+  ResolvedVideo,
   ResolvedWorkItem,
+  ResolvedYoutube,
   ServiceCard,
 } from "./types";
 export type { Aspect, Link, SeoMeta } from "@content/schema/common";
 export type { Service, CaseStudy } from "@content/schema/collections";
 export type {
   About,
+  Client,
   Contact,
   Faq,
   FaqItem,
@@ -51,9 +54,12 @@ export type {
   ProcessStage,
   RouteKey,
   Seo,
+  Stat,
+  Testimonial,
   Ui,
   Work,
   WorkCategory,
+  WorkItem,
 } from "@content/schema/pages";
 export type { Site } from "@content/schema/site";
 
@@ -197,6 +203,21 @@ export async function getCaseStudy(slug: string): Promise<ResolvedCaseStudy | un
 }
 
 /* ── Media ── */
+
+/**
+ * Frames for the hero film ribbon: the reel poster, the work thumbnails and the case-study
+ * heroes, repeated if needed to fill `count` frames.
+ */
+export async function getRibbonFrames(count = 14): Promise<ResolvedImage[]> {
+  const { work, caseStudies } = store();
+  const pool = [
+    resolveImage("reel-poster"),
+    ...work.items.filter((i) => i.featured).map((i) => resolveImage(i.thumbnail)),
+    ...caseStudies.map((c) => resolveImage(c.hero)),
+    ...work.items.filter((i) => !i.featured).map((i) => resolveImage(i.thumbnail)),
+  ];
+  return Array.from({ length: count }, (_, i) => pool[i % pool.length]!);
+}
 
 export async function getImage(id: string): Promise<ResolvedImage> {
   return resolveImage(id);

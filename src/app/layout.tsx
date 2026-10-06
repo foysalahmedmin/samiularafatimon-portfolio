@@ -1,6 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo, DM_Mono, DM_Sans } from "next/font/google";
+import { ViewTransition } from "react";
+import { MotionHead } from "@/components/motion/MotionHead";
 import { env } from "@/config/env.server";
+import { PageShell } from "@/features/shell/PageShell";
+import { getSeoDefaults, getSite } from "@/lib/content";
+import { MotionProvider } from "@/lib/motion/MotionProvider";
 import "./globals.css";
 
 const display = Archivo({
@@ -23,10 +28,15 @@ const mono = DM_Mono({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(env.siteUrl),
-  title: "Samiul Arafat Imon",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const [site, seo] = await Promise.all([getSite(), getSeoDefaults()]);
+  return {
+    metadataBase: new URL(env.siteUrl),
+    title: { default: seo.defaultTitle, template: seo.titleTemplate },
+    description: site.description,
+    applicationName: site.name,
+  };
+}
 
 export const viewport: Viewport = {
   themeColor: "#050d14",
@@ -34,8 +44,26 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
-      <body data-tone="dark">{children}</body>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${display.variable} ${body.variable} ${mono.variable}`}
+    >
+      <head>
+        <MotionHead />
+        <noscript>
+          <style>{".boot-overlay{display:none}"}</style>
+        </noscript>
+      </head>
+      <body data-tone="dark">
+        <MotionProvider>
+          <PageShell>
+            <ViewTransition enter="cut-in" exit="none" default="none">
+              {children}
+            </ViewTransition>
+          </PageShell>
+        </MotionProvider>
+      </body>
     </html>
   );
 }
