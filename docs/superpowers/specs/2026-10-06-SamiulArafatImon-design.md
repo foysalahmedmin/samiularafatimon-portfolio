@@ -1,6 +1,6 @@
 # Samiul Arafat Imon — Portfolio: Design Spec & Master Plan
 
-**Status:** v2 — approved to start Phases 0–2 ("improve, then start", 2026-10-06) · **Date:** 2026-10-06 · **Project root:** `/Users/mac/Developer/Offices/Montage/imon-portfolio`
+**Status:** v2 — approved to start Phases 0–2 ("improve, then start", 2026-10-06) · **Date:** 2026-10-06 · **Project root:** `/Users/mac/Developer/Offices/Montage/SamiulArafatImon`
 
 This is the master plan: what we build, how it looks, how the code and data are organised, and the order of work.
 **How it moves and behaves** (every animation, interaction and UX rule, with numbers) lives in the companion: [Motion & UX Spec](2026-10-06-motion-and-ux-spec.md).
@@ -229,7 +229,7 @@ None of the published case studies carry real outcome metrics (views, retention,
 ### 7.1 Folder layout
 
 ```
-imon-portfolio/
+SamiulArafatImon/
 ├─ content/                  ← DATA ONLY. No JSX, no component imports.
 │  ├─ site.ts  home.ts  about.ts  stats.ts  clients.ts  process.ts
 │  ├─ pricing.ts  faq.ts  testimonials.ts  work.ts  seo.ts  ui.ts  media.ts
@@ -390,5 +390,5 @@ Phases 4–6 are independent once Phase 3 locks the shell. They run one after an
 - Old portfolio: fetched raw HTML and read all text/scripts (fetched 2026-10-06; its footer says "© 2025").
 - Montage Motion: homepage HTML, `/portfolio` HTML (media URLs and video links read directly), `/about-us`, `/case-studies`, and 6 case-study pages (via page summarisation).
 - Not verifiable from here: the YouTube channel page (fetch returned only footer links), Fiverr, LinkedIn, Instagram.
-- The empty nested folder `imon-portfolio/imon-portfolio/` is untouched; the app will live in the project root unless you say otherwise.
+- The empty nested folder `SamiulArafatImon/SamiulArafatImon/` is untouched; the app will live in the project root unless you say otherwise.
 - v2 technical patterns were checked against current docs on 2026-10-06: Lenis README (GSAP ticker integration), GSAP ScrollTrigger / `useGSAP` / `matchMedia` / SplitText guidance, Next 16.2 docs (`next/font` axes, View Transitions, upgrade guide) and React Three Fiber performance docs. Anything not covered there is flagged as "verify in Phase N".

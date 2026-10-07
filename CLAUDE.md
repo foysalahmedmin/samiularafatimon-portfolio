@@ -1,6 +1,6 @@
 @AGENTS.md
 
-# Imon portfolio — project rules
+# SamiulArafatImon — project rules
 
 Specs: `docs/superpowers/specs/` (master spec + Motion & UX spec). Plans: `docs/superpowers/plans/`. Next 16 notes: `docs/notes/next16-notes.md`.
 

@@ -1,6 +1,6 @@
 # Motion & UX Spec — Samiul Arafat Imon Portfolio
 
-**Companion to:** [2026-10-06-imon-portfolio-design.md](2026-10-06-imon-portfolio-design.md) · **Status:** Draft v2 for build · **Date:** 2026-10-06
+**Companion to:** [2026-10-06-SamiulArafatImon-design.md](2026-10-06-SamiulArafatImon-design.md) · **Status:** Draft v2 for build · **Date:** 2026-10-06
 
 The master spec says *what* the site is. This document says *how it feels*: every animation, interaction and UX rule, with numbers an implementer can type in. Patterns marked ✔ were checked against current official docs (GSAP, Lenis, Next 16.2, React Three Fiber) on 2026-10-06.
 

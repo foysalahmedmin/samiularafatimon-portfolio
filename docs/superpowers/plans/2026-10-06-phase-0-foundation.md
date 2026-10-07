@@ -8,7 +8,7 @@
 
 **Tech Stack:** Next 16.3, React 19.2, TypeScript 5.9, Tailwind 4.3, ESLint 9 (flat config), Zod 4, Vitest, Playwright, pnpm 10, Node 20.
 
-**Spec:** [master spec](../specs/2026-10-06-imon-portfolio-design.md) · [Motion & UX spec](../specs/2026-10-06-motion-and-ux-spec.md)
+**Spec:** [master spec](../specs/2026-10-06-SamiulArafatImon-design.md) · [Motion & UX spec](../specs/2026-10-06-motion-and-ux-spec.md)
 
 **Facts verified before writing this plan (scaffold probe, 2026-10-06):** `create-next-app@latest` produces Next 16.3.8, React 19.2.8, TS 5.9.3, ESLint 9.39, Tailwind 4.3.3, an `AGENTS.md` + `CLAUDE.md` (agent rules), `eslint.config.mjs` using `eslint-config-next/core-web-vitals` + `/typescript`, and `LayoutProps<"/">` route-type helpers. Archivo's font data lists axes `wdth 62–125` and `wght 100–900`, so `axes: ["wdth"]` is valid. Docs ship in `node_modules/next/dist/docs/`.
 
@@ -49,7 +49,7 @@
 - [ ] **Step 1: Initialise the repository**
 
 ```bash
-cd /Users/mac/Developer/Offices/Montage/imon-portfolio
+cd /Users/mac/Developer/Offices/Montage/SamiulArafatImon
 git init -b main
 git config user.name >/dev/null || echo "NO NAME SET"
 git config user.email >/dev/null || echo "NO EMAIL SET"
@@ -62,7 +62,7 @@ Expected: `Initialized empty Git repository`. If either "NO … SET" line prints
 pnpm dlx create-next-app@latest . --ts --app --src-dir --tailwind --eslint \
   --import-alias "@/*" --use-pnpm --disable-git --yes
 ```
-Expected: ends with `Success! Created imon-portfolio at …`. The existing `docs/` and `profile.jpg` are not conflicts.
+Expected: ends with `Success! Created SamiulArafatImon at …`. The existing `docs/` and `profile.jpg` are not conflicts.
 
 - [ ] **Step 3: Keep the original photo out of `public/`**
 
@@ -943,7 +943,7 @@ jobs:
 ```markdown
 @AGENTS.md
 
-# Imon portfolio — project rules
+# SamiulArafatImon — project rules
 
 Specs: `docs/superpowers/specs/` (master spec + Motion & UX spec). Plans: `docs/superpowers/plans/`.
 
@@ -1017,7 +1017,7 @@ Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>"
 
 ## Execution notes (what differed from the plan)
 
-- `create-next-app` refuses a folder that already contains non-whitelisted files (`profile.jpg`, the empty nested `imon-portfolio/`). I scaffolded into a scratch folder and copied the result in with `rsync` (excluding `node_modules`/`.next`), then ran `pnpm install --frozen-lockfile`. The empty nested folder was left untouched.
+- `create-next-app` refuses a folder that already contains non-whitelisted files (`profile.jpg`, the empty nested `SamiulArafatImon/`). I scaffolded into a scratch folder and copied the result in with `rsync` (excluding `node_modules`/`.next`), then ran `pnpm install --frozen-lockfile`. The empty nested folder was left untouched.
 - Work happens on branch `feat/foundation`; `main` holds only the docs commit. The machine's existing git identity is used for commits.
 - Vitest 5 resolves tsconfig paths natively (`resolve: { tsconfigPaths: true }`), so `vite-tsconfig-paths` was installed, then removed.
 - View transitions need **no config flag** in the installed Next 16.3 docs (the 16.2 web docs mention `experimental.viewTransition`). Specs corrected.
