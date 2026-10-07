@@ -38,6 +38,7 @@ export const ui: Ui = {
   caseStudy: {
     client: "Client",
     industry: "Industry",
+    format: "Format",
     myRole: "My role",
     services: "Services",
     brief: "The brief",

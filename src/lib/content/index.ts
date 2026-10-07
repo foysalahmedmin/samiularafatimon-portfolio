@@ -50,6 +50,7 @@ export type {
   Faq,
   FaqItem,
   Home,
+  LegalDoc,
   Pricing,
   ProcessStage,
   RouteKey,
@@ -107,6 +108,10 @@ export async function getPricing() {
   return store().pricing;
 }
 
+export async function getLegal(kind: "privacy" | "terms") {
+  return store().legal[kind];
+}
+
 export async function getFaq() {
   return store().faq;
 }
@@ -153,6 +158,8 @@ export async function getWorkPage() {
     hero: work.hero,
     allLabel: work.allLabel,
     emptyLabel: work.emptyLabel,
+    filterLabel: work.filterLabel,
+    openOriginal: work.openOriginal,
     categories: work.categories.filter((c) => used.has(c.id)),
   };
 }

@@ -4,6 +4,7 @@ import { clients } from "./clients";
 import { contact } from "./contact";
 import { faq } from "./faq";
 import { home } from "./home";
+import { legal } from "./legal";
 import { media } from "./media";
 import mediaManifest from "./media.manifest.json";
 import { pricing } from "./pricing";
@@ -29,6 +30,7 @@ export const content = {
   testimonials,
   work,
   contact,
+  legal,
   seo,
   ui,
   media,

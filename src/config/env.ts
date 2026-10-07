@@ -8,6 +8,9 @@ const rawSchema = z.object({
   VERCEL_URL: z.string().min(1).optional(),
   SITE_URL: z.string().min(1).optional(),
   CONTENT_STRICT: z.enum(["0", "1"]).optional(),
+  RESEND_API_KEY: z.string().min(1).optional(),
+  CONTACT_FROM: z.string().min(3).optional(),
+  CONTACT_TO: z.email().optional(),
 });
 
 export type Env = {
@@ -17,6 +20,8 @@ export type Env = {
   isProductionDeployment: boolean;
   /** When true, content still marked `needsReview` fails the build. */
   contentStrict: boolean;
+  /** Contact form delivery. When `resendApiKey` is missing the form cannot send mail. */
+  email: { resendApiKey?: string | undefined; from?: string | undefined; to?: string | undefined };
 };
 
 function toOrigin(value: string, name: string): string {
@@ -33,7 +38,8 @@ function toOrigin(value: string, name: string): string {
 }
 
 export function parseEnv(source: Record<string, string | undefined>): Env {
-  const raw = rawSchema.parse(source);
+  // `KEY=` in an .env file arrives as an empty string: treat it as "not set".
+  const raw = rawSchema.parse(Object.fromEntries(Object.entries(source).filter(([, value]) => value !== "")));
   const isProductionDeployment = raw.VERCEL_ENV === "production";
 
   let siteUrl: string;
@@ -51,5 +57,6 @@ export function parseEnv(source: Record<string, string | undefined>): Env {
     siteUrl,
     isProductionDeployment,
     contentStrict: raw.CONTENT_STRICT === "1" || isProductionDeployment,
+    email: { resendApiKey: raw.RESEND_API_KEY, from: raw.CONTACT_FROM, to: raw.CONTACT_TO },
   };
 }

@@ -8,6 +8,8 @@ type SmartLinkProps = Omit<ComponentPropsWithRef<"a">, "href"> & {
   href: string;
   /** Screen-reader suffix for links that open a new tab, e.g. "opens in a new tab". */
   externalLabel?: string;
+  /** next/link only: set false to keep the scroll position when navigating (query-string state). */
+  scroll?: boolean;
   children?: ReactNode;
 };
 
@@ -15,7 +17,7 @@ type SmartLinkProps = Omit<ComponentPropsWithRef<"a">, "href"> & {
  * One link component for everything: internal paths use next/link (prefetch, transitions),
  * external URLs open in a new tab safely, mailto:/tel:/#hash are plain anchors.
  */
-export function SmartLink({ href, externalLabel, children, ...props }: SmartLinkProps) {
+export function SmartLink({ href, externalLabel, scroll, children, ...props }: SmartLinkProps) {
   if (isExternal(href)) {
     return (
       <a href={href} target="_blank" rel="noopener noreferrer" {...props}>
@@ -32,7 +34,7 @@ export function SmartLink({ href, externalLabel, children, ...props }: SmartLink
     );
   }
   return (
-    <NextLink href={href} {...props}>
+    <NextLink href={href} scroll={scroll} {...props}>
       {children}
     </NextLink>
   );

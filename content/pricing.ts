@@ -55,6 +55,7 @@ export const pricing: Pricing = {
     },
   ],
   retainers: {
+    kicker: "Monthly plans",
     title: "Ongoing content? Montage Motion offers monthly plans.",
     lede: "For a steady stream of Reels and Shorts, the studio runs monthly plans.",
     plans: [

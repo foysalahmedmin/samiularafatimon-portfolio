@@ -9,13 +9,15 @@ import { Container } from "@/components/ui/Container";
 import { SmartLink } from "@/components/ui/Link";
 import { Section } from "@/components/ui/Section";
 import { SectionHead } from "@/components/ui/SectionHead";
+import { cn } from "@/lib/cn";
 import type { CaseStudyCard, Link } from "@/lib/content";
 import { gsap, useGSAP } from "@/lib/motion/gsap";
 import { useMotion } from "@/lib/motion/MotionProvider";
 import { routes } from "@/lib/routes";
 
 type CaseStackProps = {
-  head: { kicker: string; title: string; lede?: string | undefined; cta?: Link | undefined };
+  /** Leave out when the page already has its own heading. */
+  head?: { kicker: string; title: string; lede?: string | undefined; cta?: Link | undefined };
   cases: CaseStudyCard[];
   labels: { readCase: string; client: string };
 };
@@ -59,8 +61,8 @@ export function CaseStack({ head, cases, labels }: CaseStackProps) {
   return (
     <Section tone="dark" chapter="Cases" id="cases" exitParallax={false}>
       <Container>
-        <SectionHead head={head} />
-        <div ref={stack} className="mt-16 flex flex-col gap-8 md:gap-[16vh]">
+        {head ? <SectionHead head={head} /> : null}
+        <div ref={stack} className={cn(head && "mt-16", "flex flex-col gap-8 md:gap-[16vh]")}>
           {cases.map((item, index) => (
             <article
               key={item.slug}

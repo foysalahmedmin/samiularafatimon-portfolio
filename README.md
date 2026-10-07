@@ -11,6 +11,10 @@ Cinematic portfolio for Samiul Arafat Imon, video editor and founder of Montage 
 
 Requires Node 20+ and pnpm 10. Copy `.env.example` to `.env.local` to change settings.
 
+## Pages
+
+Home · Work (filter + lightbox) · Case studies (3) · Services (6) · About · Pricing · Contact · Privacy · Terms. See `docs/CONTENT_GUIDE.md` to change content.
+
 ## Where things live
 
 - `content/` — all site data (copy, work, case studies, stats, SEO). Edit here to change what the site says.

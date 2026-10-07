@@ -10,7 +10,8 @@ import type { FaqItem } from "@/lib/content";
 
 type FaqAccordionProps = {
   head: { kicker: string; title: string };
-  items: FaqItem[];
+  items: Array<Pick<FaqItem, "id" | "q" | "a">>;
+  chapter?: string;
 };
 
 const subscribeHash = (notify: () => void) => {
@@ -20,7 +21,7 @@ const subscribeHash = (notify: () => void) => {
 const readHash = () => window.location.hash;
 
 /** One question open at a time. Opens with a height animation; each question is deep-linkable (#faq-id). */
-export function FaqAccordion({ head, items }: FaqAccordionProps) {
+export function FaqAccordion({ head, items, chapter }: FaqAccordionProps) {
   // `undefined` means "the visitor has not chosen yet": follow the URL hash (#faq-id) if there is one.
   const [chosen, setChosen] = useState<string | null | undefined>(undefined);
   const hash = useSyncExternalStore(subscribeHash, readHash, () => "");
@@ -29,7 +30,7 @@ export function FaqAccordion({ head, items }: FaqAccordionProps) {
   const setOpen = (id: string | null) => setChosen(id);
 
   return (
-    <Section tone="light" id="faq">
+    <Section tone="light" id="faq" chapter={chapter}>
       <Container className="grid gap-12 md:grid-cols-[0.8fr_1.2fr] md:gap-20">
         <SectionHead head={head} withCta={false} className="md:block" />
         <ul className="border-b border-(color:--tone-line)">

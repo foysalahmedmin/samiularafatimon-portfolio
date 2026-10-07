@@ -79,7 +79,7 @@ export function Section({
       data-tone={tone}
       data-chapter={chapter}
       className={cn(
-        "relative bg-(color:--tone-bg) text-(color:--tone-fg)",
+        "relative overflow-x-clip bg-(color:--tone-bg) text-(color:--tone-fg)",
         !first && "-mt-(--sheet-r) rounded-t-(--sheet-r)",
         padded && (first ? "pt-(--section-y)" : "pt-[calc(var(--section-y)+var(--sheet-r))]"),
         padded && "pb-(--section-y)",

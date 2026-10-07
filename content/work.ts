@@ -14,6 +14,8 @@ export const work: Work = {
   },
   allLabel: "All work",
   emptyLabel: "No work in this category yet. Try All work.",
+  filterLabel: "Filter by format",
+  openOriginal: "Open on YouTube",
   categories: [
     { id: "short-form", label: "Short-form", glyph: "9:16" },
     { id: "long-form", label: "Long-form", glyph: "16:9" },

@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import { Reveal } from "@/components/motion/Reveal";
+import { cn } from "@/lib/cn";
 import { Container } from "@/components/ui/Container";
 import { Glyph } from "@/components/ui/Glyph";
 import { ArrowRight } from "@/components/ui/Icons";
@@ -10,7 +11,8 @@ import type { Link, ServiceCard } from "@/lib/content";
 import { routes } from "@/lib/routes";
 
 type ServiceIndexProps = {
-  head: { kicker: string; title: string; lede?: string | undefined; cta?: Link | undefined };
+  /** Leave out when the page already has its own heading. */
+  head?: { kicker: string; title: string; lede?: string | undefined; cta?: Link | undefined };
   services: ServiceCard[];
   chapter?: boolean;
 };
@@ -23,8 +25,8 @@ export function ServiceIndex({ head, services, chapter = true }: ServiceIndexPro
   return (
     <Section tone="light" chapter={chapter ? "Services" : undefined} id={chapter ? "services" : undefined}>
       <Container>
-        <SectionHead head={head} />
-        <Reveal as="ul" type="rise" stagger className="mt-14 border-b border-(color:--tone-line)">
+        {head ? <SectionHead head={head} /> : null}
+        <Reveal as="ul" type="rise" stagger className={cn(head && "mt-14", "border-b border-(color:--tone-line)")}>
           {services.map((service) => (
             <li key={service.slug} className="border-t border-(color:--tone-line)">
               <SmartLink

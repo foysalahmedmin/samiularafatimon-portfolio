@@ -61,8 +61,7 @@ export function RibbonCss({ frames, animated, className }: RibbonCssProps) {
     >
       <div
         ref={ring}
-        className="absolute top-1/2 left-1/2 size-0 [transform-style:preserve-3d]"
-        style={{ transform: "translate3d(18vw, -4vh, 0) rotateX(-8deg) rotateY(-24deg)" }}
+        className="absolute top-1/2 left-1/2 size-0 [transform-style:preserve-3d] [transform:translate3d(18vw,-4vh,0)_rotateX(-8deg)_rotateY(-24deg)] max-md:[transform:translate3d(8vw,22vh,0)_rotateX(-8deg)_rotateY(-24deg)]"
       >
         {shown.map((frame, i) => (
           <div

@@ -4,7 +4,9 @@ import { ViewTransition } from "react";
 import { MotionHead } from "@/components/motion/MotionHead";
 import { env } from "@/config/env.server";
 import { PageShell } from "@/features/shell/PageShell";
-import { getSeoDefaults, getSite } from "@/lib/content";
+import { UiCopyProvider } from "@/components/ui/UiCopy";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { getSeoDefaults, getSite, getUi } from "@/lib/content";
 import { MotionProvider } from "@/lib/motion/MotionProvider";
 import "./globals.css";
 
@@ -42,7 +44,8 @@ export const viewport: Viewport = {
   themeColor: "#050d14",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const [ui, site] = await Promise.all([getUi(), getSite()]);
   return (
     <html
       lang="en"
@@ -56,12 +59,30 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </noscript>
       </head>
       <body data-tone="dark">
+        <JsonLd
+          data={[
+            {
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: site.name,
+              url: env.siteUrl,
+              jobTitle: site.role,
+              email: site.contact.email,
+              address: { "@type": "PostalAddress", addressLocality: site.location.city, addressCountry: site.location.country },
+              worksFor: { "@type": "Organization", name: site.agency.name, url: site.agency.url },
+              sameAs: site.socials.map((social) => social.url),
+            },
+            { "@context": "https://schema.org", "@type": "WebSite", name: site.name, url: env.siteUrl },
+          ]}
+        />
         <MotionProvider>
-          <PageShell>
-            <ViewTransition enter="cut-in" exit="none" default="none">
-              {children}
-            </ViewTransition>
-          </PageShell>
+          <UiCopyProvider ui={ui}>
+            <PageShell>
+              <ViewTransition enter="cut-in" exit="none" default="none">
+                {children}
+              </ViewTransition>
+            </PageShell>
+          </UiCopyProvider>
         </MotionProvider>
       </body>
     </html>

@@ -38,6 +38,6 @@ export const contact: Contact = {
     whatsappLabel: "WhatsApp",
     emailLabel: "Email",
     copiedLabel: "Copied",
-    clockLabel: "Dhaka",
+    responseNote: "I reply within 24 hours.",
   },
 };

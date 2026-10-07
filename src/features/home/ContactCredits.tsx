@@ -1,8 +1,6 @@
-"use client";
-
-import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
+import { LocalTime } from "@/components/ui/LocalTime";
 import { Pill } from "@/components/ui/Pill";
 import { Section } from "@/components/ui/Section";
 import { Display, Kicker } from "@/components/ui/Text";
@@ -22,18 +20,6 @@ type ContactCreditsProps = {
 
 /** The last scene: the ask, three ways to reach out, and the local time in Dhaka. */
 export function ContactCredits({ headline, sub, kicker, primary, whatsapp, email, availability, location }: ContactCreditsProps) {
-  const clock = useRef<HTMLSpanElement>(null);
-
-  useEffect(() => {
-    const format = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: location.timezone });
-    const tick = () => {
-      if (clock.current) clock.current.textContent = format.format(new Date());
-    };
-    tick();
-    const id = window.setInterval(tick, 15_000);
-    return () => window.clearInterval(id);
-  }, [location.timezone]);
-
   return (
     <Section tone="dark" chapter="Contact" id="contact">
       <Container className="flex flex-col gap-12">
@@ -62,7 +48,7 @@ export function ContactCredits({ headline, sub, kicker, primary, whatsapp, email
         <Reveal type="fade" className="flex flex-wrap items-center gap-4 border-t border-(color:--tone-line) pt-6">
           {availability.open ? <Pill label={availability.label} /> : null}
           <span className="font-mono text-xs tracking-[0.14em] text-(color:--tone-muted) uppercase">
-            {location.city} · <span ref={clock} suppressHydrationWarning className="tabular-nums text-(color:--tone-fg)">--:--</span> {location.offsetLabel}
+            {location.city} · <LocalTime timezone={location.timezone} className="tabular-nums text-(color:--tone-fg)" /> {location.offsetLabel}
           </span>
         </Reveal>
       </Container>

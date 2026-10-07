@@ -111,6 +111,7 @@ export const pricingSchema = z.object({
     .min(1),
   popularLabel: z.string(),
   retainers: z.object({
+    kicker: z.string(),
     title: z.string(),
     lede: z.string(),
     plans: z.array(
@@ -187,6 +188,8 @@ export const workSchema = z.object({
   hero: z.object({ kicker: z.string(), title: z.string(), lede: z.string() }),
   allLabel: z.string(),
   emptyLabel: z.string(),
+  filterLabel: z.string(),
+  openOriginal: z.string(),
   categories: z.array(workCategorySchema).min(1),
   items: z.array(workItemSchema).min(1),
 });
@@ -220,10 +223,25 @@ export const contactSchema = z.object({
     whatsappLabel: z.string(),
     emailLabel: z.string(),
     copiedLabel: z.string(),
-    clockLabel: z.string(),
+    responseNote: z.string(),
   }),
 });
 export type Contact = z.infer<typeof contactSchema>;
+
+/* ───────────── Legal ───────────── */
+
+export const legalDocSchema = z.object({
+  ...review,
+  kicker: z.string(),
+  title: z.string(),
+  lede: z.string(),
+  updatedLabel: z.string(),
+  updated: z.string(),
+  sections: z.array(z.object({ id: slug, heading: z.string(), body: z.array(z.string()).min(1) })).min(1),
+});
+export const legalSchema = z.object({ privacy: legalDocSchema, terms: legalDocSchema });
+export type LegalDoc = z.infer<typeof legalDocSchema>;
+export type Legal = z.infer<typeof legalSchema>;
 
 /* ───────────── SEO ───────────── */
 
@@ -279,6 +297,7 @@ export const uiSchema = z.object({
   caseStudy: z.object({
     client: z.string(),
     industry: z.string(),
+    format: z.string(),
     myRole: z.string(),
     services: z.string(),
     brief: z.string(),
